@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react";
-import { View, Text, TextInput, Alert, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, Alert, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
 import { ThemeContext } from "../../styles/ThemeContext";
 import { getGlobalStyles } from "../../styles/global";
 import { loginUser } from "../../services/api";
 import * as SecureStore from 'expo-secure-store';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Login = ({ navigation }) => {
 	const { theme } = useContext(ThemeContext);
@@ -28,31 +29,42 @@ const Login = ({ navigation }) => {
 	};
 
 	return (
-		<View style={styles.container}>
-			<TextInput
-				placeholder="Email"
-				style={styles.input}
-				value={email}
-				onChangeText={setEmail}
-				keyboardType="email-address"
-			/>
-			<TextInput
-				placeholder="Password"
-				style={styles.input}
-				value={password}
-				onChangeText={setPassword}
-				secureTextEntry
-			/>
-			<TouchableOpacity style={styles.button} onPress={handleLogin}>
-				<Text style={styles.buttonText}>Login</Text>
-			</TouchableOpacity>
+		<SafeAreaView style={styles.safeArea}>
+			<ScrollView contentContainerStyle={styles.scrollContent}>
+				{/* 🔼 Banner Image */}
+				<Image
+					source={require('../../assets/img/auth-img-banner.jpg')} // Replace with your banner path
+					style={styles.banner}
+					resizeMode="cover"
+				/>
 
-			<TouchableOpacity onPress={() => navigation.navigate("Register")}>
-				<Text style={styles.label}>
-					Don't have an account yet? <Text style={styles.link}>Register</Text>
-				</Text>
-			</TouchableOpacity>
-		</View>
+				<View style={styles.container}>
+					<TextInput
+						placeholder="Email"
+						style={styles.input}
+						value={email}
+						onChangeText={setEmail}
+						keyboardType="email-address"
+					/>
+					<TextInput
+						placeholder="Password"
+						style={styles.input}
+						value={password}
+						onChangeText={setPassword}
+						secureTextEntry
+					/>
+					<TouchableOpacity style={styles.primaryButton} onPress={handleLogin}>
+						<Text style={styles.primaryButtonText}>Login</Text>
+					</TouchableOpacity>
+
+					<TouchableOpacity onPress={() => navigation.navigate("Register")}>
+						<Text style={styles.label}>
+							Don't have an account yet? <Text style={styles.link}>Register</Text>
+						</Text>
+					</TouchableOpacity>
+				</View>
+			</ScrollView>
+		</SafeAreaView>
 	);
 };
 

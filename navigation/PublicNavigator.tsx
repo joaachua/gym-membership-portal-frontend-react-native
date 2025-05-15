@@ -5,11 +5,19 @@ import Onboarding from "../pages/Onboarding/carousel_content";
 
 const Stack = createNativeStackNavigator();
 
-export default function PublicNavigator() {
+export default function PublicNavigator({ setHasSeenOnboarding }) {
 	return (
 		<Stack.Navigator screenOptions={{ headerShown: false }}>
-			<Stack.Screen name="Splash" component={SplashScreen} />
-			<Stack.Screen name="Onboarding" component={Onboarding} />
+			<Stack.Screen name="Splash">
+				{(props) => (
+					<SplashScreen {...props} setHasSeenOnboarding={setHasSeenOnboarding} />
+				)}
+			</Stack.Screen>
+			<Stack.Screen name="Onboarding">
+				{(props) => (
+					<Onboarding {...props} setHasSeenOnboarding={setHasSeenOnboarding} />
+				)}
+			</Stack.Screen>
 		</Stack.Navigator>
 	);
 }

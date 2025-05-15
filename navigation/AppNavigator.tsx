@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { View, ActivityIndicator } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import PublicNavigator from "./PublicNavigator";
 import AuthNavigator from "./AuthNavigator";
@@ -8,29 +9,28 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function AppNavigator() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [hasSeenOnboarding, setHasSeenOnboarding] = useState(false);
-	const [isLoggedIn, setIsLoggedIn] = useState(false); // We'll check for token
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 	useEffect(() => {
 		const loadState = async () => {
-			// Check if user has seen the onboarding
-			const seen = await AsyncStorage.getItem("hasSeenOnboarding");
+			const [seen, token] = await Promise.all([
+				AsyncStorage.getItem("hasSeenOnboarding"),
+				AsyncStorage.getItem("auth_token"),
+			]);
+	
 			setHasSeenOnboarding(seen === "true");
-
-			// Check if the user is logged in by verifying the token
-			const token = await AsyncStorage.getItem("auth_token");
-			setIsLoggedIn(!!token); // true if there's a valid token
-
-			setIsLoading(false); // done loading, render navigation
+			setIsLoggedIn(!!token);
+			setIsLoading(false);
 		};
+	
+		// Optional: add a minimal splash delay
+		setTimeout(loadState, 500); // reduce delay from 1500ms to 500ms
+	}, []);	
 
-		loadState();
-	}, []);
-
-	if (isLoading) return null; // Show a splash screen or loading indicator
+	if (isLoading) return null;
 
 	return (
 		<NavigationContainer>
-			{/* Decide the route flow based on onboarding status and authentication */}
 			{hasSeenOnboarding ? (
 				isLoggedIn ? (
 					<ProtectedNavigator />
@@ -38,7 +38,7 @@ export default function AppNavigator() {
 					<AuthNavigator />
 				)
 			) : (
-				<PublicNavigator />
+				<PublicNavigator setHasSeenOnboarding={setHasSeenOnboarding} />
 			)}
 		</NavigationContainer>
 	);

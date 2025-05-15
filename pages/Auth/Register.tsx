@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
-import { View, Text, TextInput, Alert, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, Alert, TouchableOpacity, ScrollView, Image } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { ThemeContext } from "../../styles/ThemeContext";
 import { getGlobalStyles } from "../../styles/global";
 import { registerUser } from "../../services/api";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Register = ({ navigation }) => {
 	const { theme } = useContext(ThemeContext);
@@ -60,43 +61,54 @@ const Register = ({ navigation }) => {
 
 	return (
 		<>
-		<View style={styles.container}>
-			<TextInput
-				placeholder="Full Name"
-				style={styles.input}
-				value={full_name}
-				onChangeText={setFullName}
-			/>
-			<TextInput
-				placeholder="Email"
-				style={styles.input}
-				value={email}
-				onChangeText={setEmail}
-			/>
-			<TextInput
-				placeholder="Phone Number"
-				style={styles.input}
-				value={phone_number}
-				onChangeText={setPhoneNumber}
-			/>
-			<TextInput
-				placeholder="Password"
-				style={styles.input}
-				value={password}
-				onChangeText={setPassword}
-				secureTextEntry
-			/>
+		<SafeAreaView style={styles.safeArea}>
+			<ScrollView contentContainerStyle={styles.scrollContent}>
+				{/* 🔼 Banner Image */}
+				<Image
+					source={require('../../assets/img/auth-img-banner.jpg')} // Replace with your banner path
+					style={styles.banner}
+					resizeMode="cover"
+				/>
 
-			<TouchableOpacity style={styles.button} onPress={handleRegister}>
-				<Text style={styles.buttonText}>Register</Text>
-			</TouchableOpacity>
+				<View style={styles.container}>
+					<TextInput
+						placeholder="Full Name"
+						style={styles.input}
+						value={full_name}
+						onChangeText={setFullName}
+					/>
+					<TextInput
+						placeholder="Email"
+						style={styles.input}
+						value={email}
+						onChangeText={setEmail}
+					/>
+					<TextInput
+						placeholder="Phone Number"
+						style={styles.input}
+						value={phone_number}
+						onChangeText={setPhoneNumber}
+					/>
+					<TextInput
+						placeholder="Password"
+						style={styles.input}
+						value={password}
+						onChangeText={setPassword}
+						secureTextEntry
+					/>
 
-			<TouchableOpacity onPress={() => navigation.navigate("Login")}>
-				<Text style={styles.label}>
-					Already have an account? <Text style={styles.link}>Login</Text>
-				</Text>
-			</TouchableOpacity>
-		</View>
+					<TouchableOpacity style={styles.primaryButton} onPress={handleRegister}>
+						<Text style={styles.primaryButtonText}>Register</Text>
+					</TouchableOpacity>
+
+					<TouchableOpacity onPress={() => navigation.navigate("Login")}>
+						<Text style={styles.label}>
+							Already have an account? <Text style={styles.link}>Login</Text>
+						</Text>
+					</TouchableOpacity>
+				</View>
+			</ScrollView>
+		</SafeAreaView>
 		</>
 	);
 };

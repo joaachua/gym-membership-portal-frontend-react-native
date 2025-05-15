@@ -3,6 +3,122 @@ import { colors } from "./themes";
 
 export const getGlobalStyles = (theme: "light" | "dark") =>
 	StyleSheet.create({
+		//Global
+		safeArea: {
+			flex: 1,
+			backgroundColor: '#fff',
+		},
+
+		scrollContent: {
+			flexGrow: 1,
+		},
+
+		scrollview: {
+			flex: 1,
+		},
+
+		view: {
+			flex: 1
+		},
+
+		container: {
+			padding: 16,
+			borderTopLeftRadius: 24,
+			borderTopRightRadius: 24,
+			backgroundColor: colors[theme].background,
+			marginTop: -30,
+			flex: 1,
+		},
+		
+		input: {
+			height: 50,
+			borderWidth: 1,
+			borderColor: colors[theme].accent,
+			color: colors[theme].bodyText,
+			paddingRight: 20,
+			paddingLeft: 20,
+			padding: 10,
+			marginVertical: 8,
+			borderRadius: 50,
+		},
+
+		title: {
+			fontWeight: 700,
+			fontSize: 28,
+			marginBottom: 10,
+			color: colors[theme].accent,
+			textAlign: 'center'
+		},
+
+		description: {
+			fontWeight: 400,
+			fontSize: 16,
+			color: colors[theme].secondary,
+			textAlign: 'center',
+			paddingHorizontal: 64
+		},
+
+		primaryButton: {
+			backgroundColor: colors[theme].accent,
+			paddingVertical: 6,
+			paddingHorizontal: 14,
+			borderRadius: 50,
+			height: 50,
+			justifyContent: 'center',
+			alignItems: 'center'
+		},
+
+		primaryButtonText: { 
+			color: colors[theme].primary, 
+			fontWeight: "bold" ,
+			fontSize: 16,
+		},
+
+		secondaryButton: {
+			backgroundColor: colors[theme].primary,
+			paddingVertical: 6,
+			paddingHorizontal: 14,
+			borderRadius: 20,
+		},
+
+		secondaryButtonText: { 
+			color: colors[theme].accent, 
+			fontWeight: "bold" 
+		},
+
+		hoveringRightButton: {
+			position: "absolute",
+			top: 50,
+			right: 20,
+			zIndex: 1,
+			backgroundColor: colors[theme].primary,
+			paddingVertical: 6,
+			paddingHorizontal: 14,
+			borderRadius: 20,
+		},
+
+		hoveringRightButtonText: { 
+			color: colors[theme].accent, 
+			fontWeight: "bold" 
+		},
+
+		shadowButton: {
+			position: "absolute",
+			bottom: 60,
+			alignSelf: "center",
+			backgroundColor: colors[theme].primary,
+			paddingVertical: 12,
+			paddingHorizontal: 24,
+			borderRadius: 25,
+			elevation: 3,
+		},
+
+		shadowButtonText: { 
+			color: colors[theme].accent, 
+			fontWeight: "bold" 
+		},
+
+		//splash screen
 		splashscreen: {
 			flex: 1,
 			justifyContent: 'center',
@@ -20,31 +136,54 @@ export const getGlobalStyles = (theme: "light" | "dark") =>
 			width: 200,
 			height: 200,
 			marginBottom: 40,
-		  },
+		},
 
+		// onboarding carousel
 		onboarding: {
-			flex: 1,
+			flexDirection: "row", 
+			justifyContent: "center", 
+			marginTop: 16
+		},
+
+		image: {
+			flex: 0.7,
 			justifyContent: 'center',
-			alignItems: 'center'
 		},
 
-		scrollview: {
-			flex: 1
+		carousel_item: {
+			height: 10,
+			width: 10,
+			borderRadius: "50%",
+			marginHorizontal: 4,
 		},
 
-		container: {
-			padding: 16,
-			backgroundColor: colors[theme].background,
-			flex: 1,
+		onboarding_item: {
+			flex: 0.3
 		},
-		input: {
-			borderWidth: 1,
-			borderColor: colors[theme].accent,
-			color: colors[theme].bodyText,
-			padding: 10,
-			marginVertical: 8,
-			borderRadius: 4,
+
+		overlayContainer: {
+			position: "absolute",
+			bottom: 0,
+			width: "100%",
+			padding: 24,
+			borderTopLeftRadius: 30,
+			borderTopRightRadius: 30,
+			backgroundColor: colors[theme].primary,
+			zIndex: 10,
 		},
+
+		pagination: {
+			flexDirection: "row",
+			justifyContent: "center",
+			marginBottom: 20,
+		},
+
+		//Login/Register
+		banner: {
+			width: '100%',
+			height: 300,
+		},
+
 		dropdown: {
 			height: 40,
 			paddingTop: 8,

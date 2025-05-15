@@ -1,40 +1,45 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { ImageBackground, View, ActivityIndicator, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ThemeContext } from "../../styles/ThemeContext";
 import { getGlobalStyles } from "../../styles/global";
 
-export default function SplashScreen({ navigation }) {
+export default function SplashScreen({ navigation, setHasSeenOnboarding }) {
 	const { theme } = useContext(ThemeContext);
 	const styles = getGlobalStyles(theme);
 
 	useEffect(() => {
 		const checkFirstLaunch = async () => {
-			const hasSeenOnboarding = await AsyncStorage.getItem("hasSeenOnboarding");
-			if (hasSeenOnboarding === null) {
-				navigation.replace("Onboarding");
+			const seen = await AsyncStorage.getItem("hasSeenOnboarding");
+
+			if (seen === "true") {
+				navigation.replace("Login"); // or your main auth screen
 			} else {
-				navigation.replace("Login"); // or Register
+				navigation.replace("Onboarding");
 			}
 		};
 
-		setTimeout(checkFirstLaunch, 1500); // mimic splash delay
+		const timer = setTimeout(() => {
+			checkFirstLaunch();
+		}, 1500); // 1.5 seconds delay
+
+		return () => clearTimeout(timer); // cleanup if component unmounts
 	}, []);
 
 	return (
-        <ImageBackground
-            source={require('../../assets/img/bg-Splash-screen.png')} // or use a URL
-            style={styles.background}
-            resizeMode="cover"
-        >
-            <View style={styles.splashscreen}>
-                <Image
-                    source={require('../../assets/img/img-Splash-screen.png')}
-                    style={styles.logo}
-                    resizeMode="contain"            
-                />
-                <ActivityIndicator size="large" />
-            </View>
-        </ImageBackground>
+		<ImageBackground
+			source={require("../../assets/img/bg-Splash-screen-v1.png")}
+			style={styles.background}
+			resizeMode="cover"
+		>
+			<View style={styles.splashscreen}>
+				<Image
+					source={require("../../assets/img/img-Splash-screen.png")}
+					style={styles.logo}
+					resizeMode="contain"
+				/>
+				<ActivityIndicator size="large" color="#ffffff" />
+			</View>
+		</ImageBackground>
 	);
 }
