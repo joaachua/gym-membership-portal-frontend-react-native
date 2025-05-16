@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import { ImageBackground, View, ActivityIndicator, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ThemeContext } from "../../styles/ThemeContext";
+import { ThemeContext, useTheme } from "../../styles/ThemeContext";
 import { getGlobalStyles } from "../../styles/global";
 
 export default function SplashScreen({ navigation, setHasSeenOnboarding }) {
-	const { theme } = useContext(ThemeContext);
+	const { theme } = useTheme();
 	const styles = getGlobalStyles(theme);
 
 	useEffect(() => {

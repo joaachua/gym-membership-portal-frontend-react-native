@@ -1,41 +1,44 @@
 import React, { useEffect, useState } from "react";
-import { View, ActivityIndicator } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import * as SecureStore from "expo-secure-store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import PublicNavigator from "./PublicNavigator";
 import AuthNavigator from "./AuthNavigator";
 import ProtectedNavigator from "./ProtectedNavigator";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function AppNavigator() {
 	const [isLoading, setIsLoading] = useState(true);
+	const [hasAuthToken, setHasAuthToken] = useState(false);
 	const [hasSeenOnboarding, setHasSeenOnboarding] = useState(false);
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 	useEffect(() => {
 		const loadState = async () => {
-			const [seen, token] = await Promise.all([
+			const [seen, secureToken] = await Promise.all([
 				AsyncStorage.getItem("hasSeenOnboarding"),
-				AsyncStorage.getItem("auth_token"),
+				SecureStore.getItemAsync("auth_token"), // more accurate than AsyncStorage fallback
 			]);
-	
+
 			setHasSeenOnboarding(seen === "true");
-			setIsLoggedIn(!!token);
+			setHasAuthToken(!!secureToken); // fix: convert to boolean
 			setIsLoading(false);
+
+			console.log(`${seen} ${secureToken}`);
+			console.log(`hasSeenOnboarding: ${seen === "true"}`);
+			console.log(`hasAuthToken: ${!!secureToken}`);
 		};
-	
-		// Optional: add a minimal splash delay
-		setTimeout(loadState, 500); // reduce delay from 1500ms to 500ms
-	}, []);	
+		setTimeout(loadState, 500);
+	}, []);
 
 	if (isLoading) return null;
 
 	return (
 		<NavigationContainer>
 			{hasSeenOnboarding ? (
-				isLoggedIn ? (
-					<ProtectedNavigator />
+				hasAuthToken ? (
+					<ProtectedNavigator setHasAuthToken={setHasAuthToken}/>
 				) : (
-					<AuthNavigator />
+					<AuthNavigator setHasAuthToken={setHasAuthToken} />
 				)
 			) : (
 				<PublicNavigator setHasSeenOnboarding={setHasSeenOnboarding} />

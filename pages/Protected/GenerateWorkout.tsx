@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
-import { ThemeContext } from "../../styles/ThemeContext";
+import { ThemeContext, useTheme } from "../../styles/ThemeContext";
 import { getGlobalStyles } from "../../styles/global";
 import {
 	logWorkout,
@@ -12,8 +12,8 @@ import {
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 
-const GenerateWorkout = ({navigation}) => {
-	const { theme } = useContext(ThemeContext);
+const GenerateWorkout = ({ navigation, setHasAuthToken }) => {
+	const { theme } = useTheme();
 	const styles = getGlobalStyles(theme);
 
 	const [exercise, setExercise] = useState("");

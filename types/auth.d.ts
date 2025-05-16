@@ -8,7 +8,9 @@ export interface User {
 }
 
 export interface RegisterRequest {
+	salutation: string;
 	full_name: string;
+	username: string;
 	phone_number: string;
 	email: string;
 	password: string;

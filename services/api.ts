@@ -10,16 +10,91 @@ import Constants from "expo-constants"; // if using Expo
 
 const API_URL = Constants.expoConfig?.extra?.API_URL || process.env.API_URL;
 
-export const registerUser = async (
-	data: RegisterRequest
-): Promise<RegisterResponse> => {
-	const response = await axios.post(`${API_URL}/user/register`, data);
-	return response.data;
+export const registerUser = async (data) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/register`,
+			data,
+			{
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error user registartion:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
 };
 
-export const loginUser = async (data: LoginRequest): Promise<LoginResponse> => {
-	const response = await axios.post(`${API_URL}/user/login`, data);
-	return response.data;
+export const loginUser = async (data) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/login`,
+			data,
+			{
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error user login:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
+};
+
+export const verifyOtp = async (data) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/verify-otp`,
+			data,
+			{
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error verify otp:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
+};
+
+export const getProfile = async (token) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/profile`,
+			{},
+			{
+				headers: {
+					"Content-Type": "application/json",
+					//"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFqb2FubmFjaHVhQGdtYWlsLmNvbSIsInNpZ25lZEF0IjoiMjAyNS0wNS0xMFQwNTo1NzozNC4yMzVaIiwiaWF0IjoxNzQ2ODU2NjU0LCJleHAiOjE3NDY5NDMwNTR9.wxKIKjEvugnZuspUr59sJWhDG09OY0M4-yGKJeSHsyU"
+					"Authorization": `Bearer ${token}`
+				},
+			}
+		);
+		console.log(response.data);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error getting user profile:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
 };
 
 export const calculateCalorie = async (data) => {

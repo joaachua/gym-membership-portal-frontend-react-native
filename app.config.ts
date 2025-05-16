@@ -8,5 +8,8 @@ export default {
 		android: {
 			package: "com.joaachua.myapp",
 		},
+		plugins: [
+			"expo-font"
+		] 
 	},
 };

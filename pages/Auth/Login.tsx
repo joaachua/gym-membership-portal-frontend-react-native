@@ -1,13 +1,14 @@
-import React, { useContext, useState } from "react";
-import { View, Text, TextInput, Alert, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
-import { ThemeContext } from "../../styles/ThemeContext";
+import React, { useContext, useEffect, useState } from "react";
+import { View, Text, TextInput, Alert, StyleSheet, TouchableOpacity, Image, ScrollView, ImageBackground } from "react-native";
+import { ThemeContext, useTheme } from "../../styles/ThemeContext";
 import { getGlobalStyles } from "../../styles/global";
 import { loginUser } from "../../services/api";
 import * as SecureStore from 'expo-secure-store';
 import { SafeAreaView } from "react-native-safe-area-context";
+import Toast from "react-native-toast-message";
 
-const Login = ({ navigation }) => {
-	const { theme } = useContext(ThemeContext);
+const Login = ({ navigation, setHasAuthToken }) => {
+	const { theme } = useTheme();
 	const styles = getGlobalStyles(theme);
 
 	const [email, setEmail] = useState("");
@@ -19,16 +20,23 @@ const Login = ({ navigation }) => {
 			const { token } = response.data;
 
 			await SecureStore.setItemAsync('auth_token', token);
-			console.log(await SecureStore.getItemAsync('auth_token'));
+			const authToken = await SecureStore.getItemAsync("auth_token");
 
-			navigation.navigate("Register");
+			setHasAuthToken(true);
+
+			Toast.show({ type: "success", text1: "Login successful!" });
 		} catch (error: any) {
-			Alert.alert("Error", error.message || "Login failed");
+			Toast.show({type: "error", text1: "Login failed"});
 			console.error("Error", error.message || "Login failed");
 		}
 	};
 
 	return (
+		<ImageBackground
+			source={require("../../assets/img/bg-Splash-screen-v1.png")}
+			style={styles.background}
+			resizeMode="cover"
+		>
 		<SafeAreaView style={styles.safeArea}>
 			<ScrollView contentContainerStyle={styles.scrollContent}>
 				{/* 🔼 Banner Image */}
@@ -53,7 +61,7 @@ const Login = ({ navigation }) => {
 						onChangeText={setPassword}
 						secureTextEntry
 					/>
-					<TouchableOpacity style={styles.primaryButton} onPress={handleLogin}>
+					<TouchableOpacity style={[styles.primaryButton, { marginBottom: 10 }]} onPress={handleLogin}>
 						<Text style={styles.primaryButtonText}>Login</Text>
 					</TouchableOpacity>
 
@@ -65,6 +73,7 @@ const Login = ({ navigation }) => {
 				</View>
 			</ScrollView>
 		</SafeAreaView>
+		</ImageBackground>
 	);
 };
 

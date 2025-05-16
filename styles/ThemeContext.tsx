@@ -1,7 +1,9 @@
 // style/ThemeContext.tsx
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { useColorScheme } from "react-native"; // detects system theme
 import { colors } from "./themes";
 
+// Define your context
 export const ThemeContext = createContext({
 	theme: "light",
 	colors: colors.light,
@@ -9,7 +11,15 @@ export const ThemeContext = createContext({
 });
 
 export const ThemeProvider = ({ children }) => {
-	const [theme, setTheme] = useState<"light" | "dark">("light");
+	const systemColorScheme = useColorScheme(); // 'light' | 'dark' | null
+	const [theme, setTheme] = useState<"light" | "dark">(systemColorScheme ?? "light");
+
+	useEffect(() => {
+		if (systemColorScheme === "dark" || systemColorScheme === "light") {
+			setTheme(systemColorScheme);
+		}
+	}, [systemColorScheme]);
+
 	const toggleTheme = () =>
 		setTheme((prev) => (prev === "light" ? "dark" : "light"));
 
@@ -22,4 +32,5 @@ export const ThemeProvider = ({ children }) => {
 	);
 };
 
+// ✅ Corrected hook
 export const useTheme = () => useContext(ThemeContext);

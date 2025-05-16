@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react";
 import { View, Text, TextInput, Alert, StyleSheet, TouchableOpacity } from "react-native";
-import { ThemeContext } from "../../styles/ThemeContext";
+import { ThemeContext, useTheme } from "../../styles/ThemeContext";
 import { getGlobalStyles } from "../../styles/global";
 import { loginUser } from "../../services/api";
 
 const CustomComponents = ({ navigation }) => {
-	const { theme } = useContext(ThemeContext);
+	const { theme } = useTheme();
 	const styles = getGlobalStyles(theme);
 
 	const [email, setEmail] = useState("");

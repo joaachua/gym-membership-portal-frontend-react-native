@@ -8,13 +8,14 @@ import {
 	Platform
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ThemeContext } from "../../styles/ThemeContext";
+import { ThemeContext, useTheme } from "../../styles/ThemeContext";
 import { getGlobalStyles } from "../../styles/global";
 import carousel_slides from "./carousel_slides";
 import OnboardingItem from "./carousle_item";
+import { colors } from "@/styles/themes";
 
 export default function Onboarding({ navigation, setHasSeenOnboarding }) {
-	const { theme } = useContext(ThemeContext);
+	const { theme } = useTheme();
 	const styles = getGlobalStyles(theme);
 	const { width } = useWindowDimensions();
 
@@ -73,7 +74,7 @@ export default function Onboarding({ navigation, setHasSeenOnboarding }) {
 						key={index}
 						style={[styles.carousel_item, {
 							backgroundColor:
-								currentIndex === index ? "#E38035" : "#36384130",
+								currentIndex === index ? "#E38035" : colors[theme].formatted,
 						}]}
 					/>
 				))}

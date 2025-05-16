@@ -6,12 +6,12 @@ import {
 	useWindowDimensions,
 	StyleSheet,
 } from "react-native";
-import { ThemeContext } from "../../styles/ThemeContext";
+import { ThemeContext, useTheme } from "../../styles/ThemeContext";
 import { getGlobalStyles } from "../../styles/global";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function OnboardingItem({ item, navigation }) {
-	const { theme } = useContext(ThemeContext);
+	const { theme } = useTheme();
 	const styles = getGlobalStyles(theme);
 	const { width, height } = useWindowDimensions();
 

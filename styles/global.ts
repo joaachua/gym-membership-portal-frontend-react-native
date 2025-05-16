@@ -6,11 +6,12 @@ export const getGlobalStyles = (theme: "light" | "dark") =>
 		//Global
 		safeArea: {
 			flex: 1,
-			backgroundColor: '#fff',
+			backgroundColor: colors[theme].primary,
 		},
 
 		scrollContent: {
 			flexGrow: 1,
+			paddingBottom: 60,
 		},
 
 		scrollview: {
@@ -18,10 +19,29 @@ export const getGlobalStyles = (theme: "light" | "dark") =>
 		},
 
 		view: {
-			flex: 1
+			backgroundColor: colors[theme].primary,
+			flex: 1,
+		},
+
+		section: {
+			marginBottom: 20,
+		},
+
+		mainContent: {
+			flex: 1,
+			padding: 20,
+		},
+
+		searchBar: {
+			height: 50,
+			borderRadius: 50,
+			paddingHorizontal: 20,
+			backgroundColor: colors[theme].formatted,
+			marginBottom: 16,
 		},
 
 		container: {
+			paddingTop: 24,
 			padding: 16,
 			borderTopLeftRadius: 24,
 			borderTopRightRadius: 24,
@@ -29,11 +49,49 @@ export const getGlobalStyles = (theme: "light" | "dark") =>
 			marginTop: -30,
 			flex: 1,
 		},
-		
+
+		content: {
+			flex: 1,
+			padding: 24,
+			justifyContent: "center",
+			backgroundColor: "#fff",
+		},
+
+		cards: {
+			backgroundColor: colors[theme].formatted,
+			borderRadius: 16,
+			padding: 24,
+		},
+
+		cardContent: {
+			color: colors[theme].bodyText,
+			fontFamily: "Roboto-Regular",
+		},
+
+		bottomNav: {
+			position: "absolute",
+			bottom: 0,
+			left: 0,
+			right: 0,
+			height: 80,
+			flexDirection: "row",
+			justifyContent: "space-around",
+			alignItems: "center",
+			borderTopEndRadius: 16,
+			borderTopStartRadius: 16,
+			//borderTopWidth: 1,
+			//borderColor: "#ddd",
+			backgroundColor: colors[theme].accent,
+		},
+
+		navItem: {
+			fontSize: 16,
+		},
+
 		input: {
+			fontFamily: "Roboto-Regular",
 			height: 50,
-			borderWidth: 1,
-			borderColor: colors[theme].accent,
+			backgroundColor: colors[theme].formatted,
 			color: colors[theme].bodyText,
 			paddingRight: 20,
 			paddingLeft: 20,
@@ -42,20 +100,48 @@ export const getGlobalStyles = (theme: "light" | "dark") =>
 			borderRadius: 50,
 		},
 
+		checkboxContainer: {
+			marginBottom: 10,
+			marginTop: 10,
+			flexDirection: "row",
+			alignItems: "center",
+		},
+
+		checkbox: {
+			display: "flex",
+			width: 20,
+			height: 20,
+			borderWidth: 1,
+			borderColor: "#999",
+			marginRight: 10,
+			justifyContent: "center",
+			alignContent: "center",
+			alignItems: "center",
+		},
+
+		checked: {
+			backgroundColor: "#007AFF",
+		},
+
 		title: {
-			fontWeight: 700,
+			fontFamily: "Roboto-Bold",
 			fontSize: 28,
 			marginBottom: 10,
 			color: colors[theme].accent,
-			textAlign: 'center'
+			textAlign: "center",
 		},
 
 		description: {
-			fontWeight: 400,
+			fontFamily: "Roboto-Regular",
 			fontSize: 16,
-			color: colors[theme].secondary,
-			textAlign: 'center',
-			paddingHorizontal: 64
+			color: colors[theme].bodyText,
+			textAlign: "center",
+			paddingHorizontal: 64,
+		},
+
+		bodyText: {
+			color: colors[theme].bodyText,
+			fontFamily: "Roboto-Regular",
 		},
 
 		primaryButton: {
@@ -64,26 +150,32 @@ export const getGlobalStyles = (theme: "light" | "dark") =>
 			paddingHorizontal: 14,
 			borderRadius: 50,
 			height: 50,
-			justifyContent: 'center',
-			alignItems: 'center'
+			justifyContent: "center",
+			alignItems: "center",
 		},
 
-		primaryButtonText: { 
-			color: colors[theme].primary, 
-			fontWeight: "bold" ,
+		primaryButtonText: {
+			color: colors[theme].buttonText,
+			fontFamily: "Roboto-Bold",
 			fontSize: 16,
 		},
 
 		secondaryButton: {
-			backgroundColor: colors[theme].primary,
+			backgroundColor: colors[theme].accent,
 			paddingVertical: 6,
 			paddingHorizontal: 14,
 			borderRadius: 20,
 		},
 
-		secondaryButtonText: { 
-			color: colors[theme].accent, 
-			fontWeight: "bold" 
+		secondaryButtonText: {
+			color: colors[theme].buttonText,
+			fontFamily: "Roboto-Bold",
+		},
+
+		blocks: {
+			height: 50,
+			backgroundColor: colors[theme].primary,
+			paddingVertical: 10
 		},
 
 		hoveringRightButton: {
@@ -91,45 +183,126 @@ export const getGlobalStyles = (theme: "light" | "dark") =>
 			top: 50,
 			right: 20,
 			zIndex: 1,
-			backgroundColor: colors[theme].primary,
+			backgroundColor: colors[theme].accent,
 			paddingVertical: 6,
 			paddingHorizontal: 14,
 			borderRadius: 20,
 		},
 
-		hoveringRightButtonText: { 
-			color: colors[theme].accent, 
-			fontWeight: "bold" 
+		hoveringRightButtonText: {
+			color: colors[theme].buttonText,
+			fontFamily: "Roboto-Bold",
 		},
 
 		shadowButton: {
 			position: "absolute",
 			bottom: 60,
 			alignSelf: "center",
-			backgroundColor: colors[theme].primary,
+			backgroundColor: colors[theme].accent,
 			paddingVertical: 12,
 			paddingHorizontal: 24,
 			borderRadius: 25,
 			elevation: 3,
 		},
 
-		shadowButtonText: { 
-			color: colors[theme].accent, 
-			fontWeight: "bold" 
+		shadowButtonText: {
+			color: colors[theme].buttonText,
+			fontFamily: "Roboto-Bold",
+		},
+
+		toastContainer: {
+			flexDirection: "column",
+			justifyContent: "center",
+			width: "90%",
+			minHeight: 52,
+			padding: 12,
+			borderRadius: 8,
+			backgroundColor: "#FEF3F2",
+			marginVertical: 8,
+			borderWidth: 1,
+		},
+
+		errorBorder: {
+			borderColor: "#D92D20",
+			backgroundColor: "#FEF3F2",
+		},
+
+		successBorder: {
+			borderColor: "#ABEFC6",
+			backgroundColor: "#ECFDF3",
+		},
+
+		errorText: {
+			color: "#D92D20",
+			fontSize: 12,
+			fontFamily: "Roboto-SemiBold",
+		},
+
+		successText: {
+			color: "#067647",
+			fontSize: 12,
+			fontFamily: "Roboto-SemiBold",
+		},
+
+		subText: {
+			color: "#000",
+			fontSize: 10,
+			marginTop: 2,
+		},
+
+		dropDown: {
+			flexDirection: "row",
+			alignItems: "center",
+			gap: 8,
+		},
+
+		dropDownItem: {
+			position: "absolute",
+			top: 55,
+			width: "100%",
+			backgroundColor: colors[theme].primary,
+			borderColor: "#ccc",
+			color: colors[theme].buttonText,
+			borderRadius: 24,
+			zIndex: 10,
+		},
+
+		grid: {
+			flexDirection: "row",
+			flexWrap: "wrap",
+			justifyContent: "space-between",
+			gap: 12,
+		},
+
+		card: {
+			width: "30%",
+			aspectRatio: 1,
+			backgroundColor: "#f5f5f5",
+			borderRadius: 12,
+			alignItems: "center",
+			justifyContent: "center",
+			padding: 10,
+		},
+
+		cardLabel: {
+			marginTop: 8,
+			fontSize: 14,
+			fontFamily: "Roboto-SemiBold",
+			color: colors[theme].bodyText,
 		},
 
 		//splash screen
 		splashscreen: {
 			flex: 1,
-			justifyContent: 'center',
-			alignItems: 'center'
+			justifyContent: "center",
+			alignItems: "center",
 		},
 
 		background: {
 			flex: 1,
-			width: '100%',
-			height: '100%',
-			justifyContent: 'center',
+			width: "100%",
+			height: "100%",
+			justifyContent: "center",
 		},
 
 		logo: {
@@ -140,14 +313,14 @@ export const getGlobalStyles = (theme: "light" | "dark") =>
 
 		// onboarding carousel
 		onboarding: {
-			flexDirection: "row", 
-			justifyContent: "center", 
-			marginTop: 16
+			flexDirection: "row",
+			justifyContent: "center",
+			marginTop: 16,
 		},
 
 		image: {
 			flex: 0.7,
-			justifyContent: 'center',
+			justifyContent: "center",
 		},
 
 		carousel_item: {
@@ -158,7 +331,7 @@ export const getGlobalStyles = (theme: "light" | "dark") =>
 		},
 
 		onboarding_item: {
-			flex: 0.3
+			flex: 0.3,
 		},
 
 		overlayContainer: {
@@ -166,6 +339,7 @@ export const getGlobalStyles = (theme: "light" | "dark") =>
 			bottom: 0,
 			width: "100%",
 			padding: 24,
+			height: "30%",
 			borderTopLeftRadius: 30,
 			borderTopRightRadius: 30,
 			backgroundColor: colors[theme].primary,
@@ -175,40 +349,37 @@ export const getGlobalStyles = (theme: "light" | "dark") =>
 		pagination: {
 			flexDirection: "row",
 			justifyContent: "center",
+			backgroundColor: colors[theme].primary,
 			marginBottom: 20,
 		},
 
 		//Login/Register
 		banner: {
-			width: '100%',
+			width: "100%",
 			height: 300,
 		},
 
-		dropdown: {
-			height: 40,
-			paddingTop: 8,
-			paddingLeft: 2,
-			borderWidth: 1,
-			borderRadius: 4,
-			borderColor: colors[theme].accent,
-			width: "100%", // Ensures the dropdown takes the full width of its container
+		//Home
+		homeCarouselBanner: {
+			borderRadius: 24,
+			width: "100%",
+			height: 200,
 		},
-		dropdownText: {
+
+		greeting: {
+			fontSize: 18,
+			fontFamily: "Roboto-SemiBold",
+			color: colors[theme].bodyText,
+		},
+
+		sectionTitle: {
 			fontSize: 16,
-			paddingLeft: 8,
+			fontFamily: "Roboto-SemiBold",
+			marginBottom: 8,
+			color: colors[theme].bodyText,
+			textTransform: 'uppercase'
 		},
-		dropdownMenu: {
-			borderRadius: 4,
-			backgroundColor: "#fff",
-			minWidth: "90%", // Ensures the dropdown menu is as wide as the container
-			width: "auto", // Adjusts the dropdown width based on the content but ensures it’s not too small
-			marginTop: 4, // Adjusts gap between the dropdown and menu
-		},
-		dropdownMenuText: {
-			fontSize: 16,
-			padding: 8,
-			width: "90%", // Ensures the text inside the dropdown is fully aligned
-		},
+
 		button: {
 			backgroundColor: colors[theme].accent,
 			padding: 12,
@@ -218,14 +389,13 @@ export const getGlobalStyles = (theme: "light" | "dark") =>
 		},
 		buttonText: {
 			color: colors[theme].buttonText,
-			fontWeight: "bold",
+			fontFamily: "Roboto-Bold",
 		},
 		link: {
 			color: colors[theme].accent,
-			fontWeight: "bold",
+			fontFamily: "Roboto-Bold",
 		},
 		label: {
 			color: colors[theme].bodyText,
-			marginTop: 8,
 		},
 	});
