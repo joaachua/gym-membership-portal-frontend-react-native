@@ -69,12 +69,15 @@ const Register = ({ navigation }) => {
 				password,
 				platform,
 			});
-			Toast.show({ type: "success", text1: "Registration successful!" });
 
-			navigation.navigate("OtpScreen", {
-				email,
-				phone_number: `${countryCode.replace("+", "")}${phone_number}`,
-			});
+			if (response && response.success) {
+				Toast.show({ type: "success", text1: "Registration successful!" });
+
+				navigation.navigate("OtpScreen", {
+					email,
+					phone_number: `${countryCode.replace("+", "")}${phone_number}`,
+				});
+			}
 		} catch (error: any) {
 			const errorMessages = error.response?.data?.data;
 

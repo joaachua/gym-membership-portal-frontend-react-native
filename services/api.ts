@@ -1,11 +1,5 @@
 // services/api.ts
 import axios from "axios";
-import {
-	RegisterRequest,
-	RegisterResponse,
-	LoginRequest,
-	LoginResponse,
-} from "../types/auth";
 import Constants from "expo-constants"; // if using Expo
 
 const API_URL = Constants.expoConfig?.extra?.API_URL || process.env.API_URL;
@@ -63,6 +57,73 @@ export const verifyOtp = async (data) => {
 				},
 			}
 		);
+		
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error verify otp:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
+};
+
+export const forgotPassword = async (data) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/forgot-password`,
+			data,
+			{
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
+		
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error triggering forgot password:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
+};
+
+export const verifyResetOtp = async (data) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/verify-reset-otp`,
+			data,
+			{
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
+		console.log(response.data);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error verify otp:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
+};
+
+export const resetPassword = async (data) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/reset-password`,
+			data,
+			{
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
+		console.log(response.data);
 		return response.data;
 	} catch (error) {
 		console.error(
@@ -86,7 +147,7 @@ export const getProfile = async (token) => {
 				},
 			}
 		);
-		console.log(response.data);
+		
 		return response.data;
 	} catch (error) {
 		console.error(

@@ -64,7 +64,7 @@ const Profile = ({ navigation, setHasAuthToken }) => {
 				}
 
 				const response = await getProfile(token); // e.g. GET /me
-				if (response && response.data) {
+				if (response && response.success) {
 					setProfile(response.data);
 
 					setSalutation(response.data?.salutation);

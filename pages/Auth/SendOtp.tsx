@@ -5,6 +5,7 @@ import { ThemeContext, useTheme } from "@/styles/ThemeContext";
 import { getGlobalStyles } from "@/styles/global";
 import * as SecureStore from 'expo-secure-store';
 import Toast from "react-native-toast-message";
+import { verifyOtp as verifyOtpApi } from "../../services/api";
 
 const OtpScreen = ({ navigation, setHasAuthToken, route }) => {
 	const { theme } = useTheme();
@@ -16,18 +17,20 @@ const OtpScreen = ({ navigation, setHasAuthToken, route }) => {
 
 	const verifyOtp = async () => {
 		try {
-			const response = await verifyOtp({
+			const response = await verifyOtpApi({
 				email,
 				otp_code: otp
 			});
-			Toast.show({ type: "success", text1: "OTP verified successful!" });
+			if (response && response.success) {
+				Toast.show({ type: "success", text1: "OTP verified successful!" });
 
-			const { token } = response.data;
+				const { token } = response.data;
 
-			await SecureStore.setItemAsync('auth_token', token);
-			const authToken = await SecureStore.getItemAsync("auth_token");
+				await SecureStore.setItemAsync('auth_token', token);
+				const authToken = await SecureStore.getItemAsync("auth_token");
 
-			setHasAuthToken(true);
+				setHasAuthToken(true);
+			}
 		} catch (error: any) {
 			const errorMessages = error.response?.data?.data;
 

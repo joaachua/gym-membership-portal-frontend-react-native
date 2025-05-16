@@ -5,27 +5,30 @@ import { ThemeContext, useTheme } from "@/styles/ThemeContext";
 import { getGlobalStyles } from "@/styles/global";
 import * as SecureStore from 'expo-secure-store';
 import Toast from "react-native-toast-message";
-import { forgotPassword as forgotPasswordApi } from "../../services/api";
+import { verifyResetOtp } from "../../services/api";
 
-const ForgotPassword = ({ navigation, setHasAuthToken }) => {
+const ResetOtp = ({ navigation, setHasAuthToken, route }) => {
 	const { theme } = useTheme();
 	const styles = getGlobalStyles(theme);
-	
-    const [email, setEmail] = useState("");
 
-	const forgotPassword = async () => {
+	const { email, phone_number } = route.params;
+	
+	const [otp, setOtp] = useState("");
+
+	const verifyOtp = async () => {
 		try {
-			const response = await forgotPasswordApi({
-				email
+			const response = await verifyResetOtp({
+				email,
+				reset_otp_code: otp
 			});
 
-            if (response && response.success) {
-                Toast.show({ type: "success", text1: "Sent reset password email!" });
-    
-                navigation.navigate("ResetOtp", {
-                    email,
-                });
-            }
+			if (response && response.success) {
+				Toast.show({ type: "success", text1: "Reset OTP verified successful!" });
+
+				navigation.navigate("ResetPassword", {
+					token: response.data.reset_token
+				});
+			}
 		} catch (error: any) {
 			const errorMessages = error.response?.data?.data;
 
@@ -36,7 +39,7 @@ const ForgotPassword = ({ navigation, setHasAuthToken }) => {
 			} else if (error.response?.data?.message) {
 				Toast.show({ type: "error", text1: error.response.data.message });
 			} else {
-				Toast.show({ type: "error", text1: "Reset password failed." });
+				Toast.show({ type: "error", text1: "Verify otp failed." });
 			}
 		}
 
@@ -45,23 +48,24 @@ const ForgotPassword = ({ navigation, setHasAuthToken }) => {
 	return (
 		<SafeAreaView style={styles.safeArea}>
 			<View style={styles.content}>
-				<Text style={styles.title}>Enter Email Address</Text>
-                <Text style={[styles.description, { paddingHorizontal: 20, paddingBottom: 10 }]}>{"Please enter the email address that you registered with to get reset otp."}</Text>
+				<Text style={styles.title}>Enter Reset OTP</Text>
 				<TextInput
 					style={styles.input}
-					value={email}
-					onChangeText={setEmail}
-					placeholder="Enter Email Address"
+					keyboardType="numeric"
+					maxLength={6}
+					value={otp}
+					onChangeText={setOtp}
+					placeholder="Enter 6-digit reset OTP"
 				/>
                 <TouchableOpacity
 					style={[styles.primaryButton, { marginBottom: 10 }]}
-					onPress={forgotPassword}
+					onPress={verifyOtp}
 				>
-		    		<Text style={styles.primaryButtonText}>Get Reset OTP</Text>
+		    		<Text style={styles.primaryButtonText}>Verify Reset OTP</Text>
 				</TouchableOpacity>
 			</View>
 		</SafeAreaView>
 	);
 };
 
-export default ForgotPassword;
+export default ResetOtp;

@@ -17,14 +17,17 @@ const Login = ({ navigation, setHasAuthToken }) => {
 	const handleLogin = async () => {
 		try {
 			const response = await loginUser({ email, password });
-			const { token } = response.data;
 
-			await SecureStore.setItemAsync('auth_token', token);
-			const authToken = await SecureStore.getItemAsync("auth_token");
+			if (response && response.success) {
+				const { token } = response.data;
 
-			setHasAuthToken(true);
+				await SecureStore.setItemAsync('auth_token', token);
+				const authToken = await SecureStore.getItemAsync("auth_token");
 
-			Toast.show({ type: "success", text1: "Login successful!" });
+				setHasAuthToken(true);
+
+				Toast.show({ type: "success", text1: "Login successful!" });
+			}
 		} catch (error: any) {
 			Toast.show({type: "error", text1: "Login failed"});
 			console.error("Error", error.message || "Login failed");
@@ -69,6 +72,10 @@ const Login = ({ navigation, setHasAuthToken }) => {
 						<Text style={styles.label}>
 							Don't have an account yet? <Text style={styles.link}>Register</Text>
 						</Text>
+					</TouchableOpacity>
+
+					<TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
+						<Text style={styles.link}>Forgot Password?</Text>
 					</TouchableOpacity>
 				</View>
 			</ScrollView>
