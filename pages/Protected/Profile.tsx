@@ -9,10 +9,11 @@ import {
 	Image,
 	ScrollView,
 	ImageBackground,
+	Modal,
 } from "react-native";
 import { ThemeContext, useTheme } from "../../styles/ThemeContext";
 import { getGlobalStyles } from "../../styles/global";
-import { getProfile, updateProfile } from "../../services/api";
+import { getProfile, logout, updateProfile } from "../../services/api";
 import * as SecureStore from "expo-secure-store";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
@@ -24,6 +25,7 @@ const Profile = ({ navigation, setHasAuthToken }) => {
 	const { theme } = useTheme();
 	const styles = getGlobalStyles(theme);
 	const [profile, setProfile] = useState(null);
+	const [isVisible, setIsVisible] = useState(false);
 	const [isDisabled, setIsDisabled] = useState(true);
 
 	const salutationOption = [
@@ -111,13 +113,6 @@ const Profile = ({ navigation, setHasAuthToken }) => {
 
 	const handleUpdateProfile = async () => {
 		try {
-			console.log({
-				salutation, 
-				username, 
-				full_name, 
-				email, 
-				phone_number: `${countryCode.replace("+", "")}${phone_number}`
-			});
 			const response = await updateProfile(authToken, {
 				salutation, 
 				username, 
@@ -147,8 +142,35 @@ const Profile = ({ navigation, setHasAuthToken }) => {
 		}
 	};
 
-	const handleLogout = () => {
-		throw new Error("Function not implemented.");
+	const handleLogout = async () => {
+		try {
+			const response = await logout(authToken);
+
+			if (response && response.success) {
+				Toast.show({ type: "success", text1: response?.message });
+				await SecureStore.deleteItemAsync("auth_token");
+				setHasAuthToken(false);
+			}
+		} catch (error) {
+			const errorMessages = error.response?.data?.data;
+
+			if (Array.isArray(errorMessages) && errorMessages.length > 0) {
+				// Join all messages separated by newline or comma
+				const messages = errorMessages.map((e: any) => e.message).join(", ");
+				Toast.show({ type: "error", text1: messages });
+			} else if (error.response?.data?.message) {
+				Toast.show({ type: "error", text1: error.response.data.message });
+			} else if (error?.response?.data?.message === "Failed to authenticate token") {
+				Toast.show({ type: "error", text1: error?.response?.data?.message });
+				await SecureStore.deleteItemAsync("auth_token");
+				setHasAuthToken(false);
+			}
+		}
+	};
+
+	const confirmLogout = () => {
+		setIsVisible(false);
+		handleLogout();
 	};
 
 	return (
@@ -372,7 +394,7 @@ const Profile = ({ navigation, setHasAuthToken }) => {
 						</TouchableOpacity>
 
 						<TouchableOpacity
-							onPress={handleLogout}
+							onPress={() => setIsVisible(true)}
 							style={[styles.blocks, { borderColor: "red" }]}
 						>
 							<Text
@@ -387,7 +409,27 @@ const Profile = ({ navigation, setHasAuthToken }) => {
 					</View>
 				</View>
 			</ScrollView>
-
+			
+			<Modal
+				visible={isVisible}
+				transparent
+				animationType="fade"
+				onRequestClose={() => setIsVisible(false)}
+			>
+				<View style={styles.modalOverlay}>
+					<View style={styles.modalContent}>
+						<Text style={styles.modalText}>Are you sure you want to logout?</Text>
+						<View style={styles.modalActions}>
+							<TouchableOpacity onPress={confirmLogout} style={styles.confirmButton}>
+								<Text style={styles.buttonText}>Yes, confirm</Text>
+							</TouchableOpacity>
+							<TouchableOpacity onPress={() => setIsVisible(false)} style={styles.cancelButton}>
+								<Text style={[styles.buttonText, {color: colors[theme].accent}]}>Cancel</Text>
+							</TouchableOpacity>
+						</View>
+					</View>
+				</View>
+			</Modal>
 			<CustomNavBar navigation={navigation} />
 		</SafeAreaView>
 	);

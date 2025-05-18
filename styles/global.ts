@@ -160,6 +160,22 @@ export const getGlobalStyles = (theme: "light" | "dark") =>
 			fontSize: 16,
 		},
 
+		outlinePrimaryButton: {
+			backgroundColor: colors[theme].primary,
+			paddingVertical: 6,
+			paddingHorizontal: 14,
+			borderRadius: 50,
+			height: 50,
+			justifyContent: "center",
+			alignItems: "center",
+		},
+
+		outlinePrimaryButtonText: {
+			color: colors[theme].accent,
+			fontFamily: "Roboto-Bold",
+			fontSize: 16,
+		},
+
 		secondaryButton: {
 			backgroundColor: colors[theme].accent,
 			paddingVertical: 6,
@@ -175,7 +191,7 @@ export const getGlobalStyles = (theme: "light" | "dark") =>
 		blocks: {
 			height: 50,
 			backgroundColor: colors[theme].primary,
-			paddingVertical: 10
+			paddingVertical: 10,
 		},
 
 		hoveringRightButton: {
@@ -291,6 +307,58 @@ export const getGlobalStyles = (theme: "light" | "dark") =>
 			color: colors[theme].bodyText,
 		},
 
+		modalOverlay: {
+			flex: 1,
+			backgroundColor: colors[theme].formatted,
+			justifyContent: "center",
+			alignItems: "center",
+		},
+
+		modalContent: {
+			backgroundColor: colors[theme].background,
+			paddingVertical: 40,
+			paddingHorizontal: 20,
+			borderRadius: 24,
+			width: "80%",
+			alignItems: "center",
+		},
+
+		modalText: {
+			fontSize: 16,
+			marginBottom: 20,
+			textAlign: "center",
+		},
+
+		modalActions: {
+			flexDirection: "row",
+			justifyContent: "space-between",
+			width: "100%",
+		},
+
+		confirmButton: {
+			backgroundColor: colors[theme].accent,
+			borderRadius: 50,
+			height: 50,
+			flex: 1,
+			marginRight: 10,
+			alignItems: "center",
+			justifyContent: "center",
+		},
+
+		cancelButton: {
+			backgroundColor: colors[theme].primary,
+			borderRadius: 50,
+			height: 50,
+			flex: 1,
+			alignItems: "center",
+			justifyContent: "center",
+		},
+
+		buttonText: {
+			color: colors[theme].buttonText,
+			fontWeight: "bold",
+		},
+
 		//splash screen
 		splashscreen: {
 			flex: 1,
@@ -377,7 +445,7 @@ export const getGlobalStyles = (theme: "light" | "dark") =>
 			fontFamily: "Roboto-SemiBold",
 			marginBottom: 8,
 			color: colors[theme].bodyText,
-			textTransform: 'uppercase'
+			textTransform: "uppercase",
 		},
 
 		button: {

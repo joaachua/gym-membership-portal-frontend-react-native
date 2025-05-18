@@ -34,7 +34,7 @@ export default function App() {
 			//await SecureStore.deleteItemAsync("auth_token");
 			console.log(`${seen} ${token}`);
 
-		console.log("Current theme:", theme);
+			console.log("Current theme:", theme);
 		};
 
 		loadState();

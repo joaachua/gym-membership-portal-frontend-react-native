@@ -3,7 +3,7 @@ import React from "react";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { colors } from "../styles/themes";
 
-const ThemePreview = ({ theme = "dark" }: { theme?: "dark" | "dark" }) => {
+const ThemePreview = ({ theme = "light" }: { theme?: "light" | "dark" }) => {
 	const selectedTheme = colors[theme];
 
 	return (

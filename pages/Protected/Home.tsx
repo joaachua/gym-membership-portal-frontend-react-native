@@ -73,19 +73,19 @@ const Home = ({ navigation, setHasAuthToken }) => {
 					<View style={[styles.section, {marginBottom: 0}]}>
 						<Text style={styles.sectionTitle}>Shortcuts</Text>
 						<View style={styles.grid}>
-							<TouchableOpacity style={styles.card}>
+							<TouchableOpacity style={styles.card} onPress={() => navigation.navigate("GenerateWorkout")}>
 								<Icon name={"calendar"} size={36} color="#E38035" />
 								<Text style={styles.cardLabel}>Workout</Text>
 							</TouchableOpacity>
-							<TouchableOpacity style={styles.card}>
+							<TouchableOpacity style={styles.card} onPress={() => navigation.navigate("")}>
 								<Icon name={"food-drumstick"} size={36} color="#E38035" />
 								<Text style={styles.cardLabel}>Meals</Text>
 							</TouchableOpacity>
-							<TouchableOpacity style={styles.card}>
+							<TouchableOpacity style={styles.card} onPress={() => navigation.navigate("WorkoutLog")}>
 								<Icon name={"chart-line"} size={36} color="#E38035" />
 								<Text style={styles.cardLabel}>Progress</Text>
 							</TouchableOpacity>
-							<TouchableOpacity style={styles.card}>
+							<TouchableOpacity style={styles.card} onPress={() => navigation.navigate("")}>
 								<Icon name={"account-group"} size={36} color="#E38035" />
 								<Text style={styles.cardLabel}>Classes</Text>
 							</TouchableOpacity>
@@ -102,9 +102,19 @@ const Home = ({ navigation, setHasAuthToken }) => {
 						</View>
 					</View>
 
-					{/* Section 3: Popular workouts */}
+					{/* Section 4: Classes */}
 					<View style={styles.section}>
-						<Text style={styles.sectionTitle}>Popular Workouts</Text>
+						<Text style={styles.sectionTitle}>Classes</Text>
+						<View style={styles.cards}>
+							<Text style={styles.cardContent}>📅 Workout</Text>
+							<Text style={styles.cardContent}>🍎 Nutrition</Text>
+							<Text style={styles.cardContent}>📊 Progress</Text>
+						</View>
+					</View>
+
+					{/* Section 5: Events */}
+					<View style={styles.section}>
+						<Text style={styles.sectionTitle}>Events</Text>
 						<View style={styles.cards}>
 							<Text style={styles.cardContent}>📅 Workout</Text>
 							<Text style={styles.cardContent}>🍎 Nutrition</Text>

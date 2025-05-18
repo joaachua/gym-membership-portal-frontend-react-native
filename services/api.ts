@@ -142,7 +142,6 @@ export const getProfile = async (token) => {
 			{
 				headers: {
 					"Content-Type": "application/json",
-					//"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFqb2FubmFjaHVhQGdtYWlsLmNvbSIsInNpZ25lZEF0IjoiMjAyNS0wNS0xMFQwNTo1NzozNC4yMzVaIiwiaWF0IjoxNzQ2ODU2NjU0LCJleHAiOjE3NDY5NDMwNTR9.wxKIKjEvugnZuspUr59sJWhDG09OY0M4-yGKJeSHsyU"
 					"Authorization": `Bearer ${token}`
 				},
 			}
@@ -166,7 +165,6 @@ export const updateProfile = async (token, data) => {
 			{
 				headers: {
 					"Content-Type": "application/json",
-					//"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFqb2FubmFjaHVhQGdtYWlsLmNvbSIsInNpZ25lZEF0IjoiMjAyNS0wNS0xMFQwNTo1NzozNC4yMzVaIiwiaWF0IjoxNzQ2ODU2NjU0LCJleHAiOjE3NDY5NDMwNTR9.wxKIKjEvugnZuspUr59sJWhDG09OY0M4-yGKJeSHsyU"
 					"Authorization": `Bearer ${token}`
 				},
 			}
@@ -205,7 +203,7 @@ export const changePassword = async (token, data) => {
 	}
 };
 
-export const calculateCalorie = async (data) => {
+export const calculateCalorie = async (token, data) => {
 	try {
 		const response = await axios.post(
 			`${API_URL}/user/estimate-calorie`,
@@ -213,7 +211,7 @@ export const calculateCalorie = async (data) => {
 			{
 				headers: {
 					"Content-Type": "application/json",
-					"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFqb2FubmFjaHVhQGdtYWlsLmNvbSIsInNpZ25lZEF0IjoiMjAyNS0wNS0xMFQwNTo1NzozNC4yMzVaIiwiaWF0IjoxNzQ2ODU2NjU0LCJleHAiOjE3NDY5NDMwNTR9.wxKIKjEvugnZuspUr59sJWhDG09OY0M4-yGKJeSHsyU"
+					"Authorization": `Bearer ${token}`
 				},
 			}
 		);
@@ -227,7 +225,7 @@ export const calculateCalorie = async (data) => {
 	}
 };
 
-export const logWorkout = async (data) => {
+export const logWorkout = async (token, data) => {
 	try {
 		const response = await axios.post(
 			`${API_URL}/user/workout-log`,
@@ -235,7 +233,29 @@ export const logWorkout = async (data) => {
 			{
 				headers: {
 					"Content-Type": "application/json",
-					"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFqb2FubmFjaHVhQGdtYWlsLmNvbSIsInNpZ25lZEF0IjoiMjAyNS0wNS0xMFQwNTo1NzozNC4yMzVaIiwiaWF0IjoxNzQ2ODU2NjU0LCJleHAiOjE3NDY5NDMwNTR9.wxKIKjEvugnZuspUr59sJWhDG09OY0M4-yGKJeSHsyU"
+					"Authorization": `Bearer ${token}`
+				},
+			}
+		);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error logging workout:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
+};
+
+export const generateWorkout = async (token, data) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/generate-workout`,
+			data,
+			{
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${token}`
 				},
 			}
 		);
@@ -249,7 +269,25 @@ export const logWorkout = async (data) => {
 	}
 };
 
-export const generateWorkout = async (data) => {
-	const response = await axios.post(`${API_URL}/user/recommend-workout`, data);
-	return response.data;
+export const logout = async (token) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/logout`,
+			{},
+			{
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${token}`
+				},
+			}
+		);
+		
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error getting user profile:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
 };

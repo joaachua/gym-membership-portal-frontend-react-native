@@ -1,7 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "@/pages/Protected/Home";
-import Workout from "@/pages/Protected/Workout";
+import WorkoutLog from "@/pages/Protected/WorkoutLog";
 import GenerateWorkout from "@/pages/Protected/GenerateWorkout";
 import Profile from "@/pages/Protected/Profile";
 import ChangePassword from "@/pages/Protected/ChangePassword";
@@ -16,9 +16,9 @@ export default function ProtectedNavigator({ setHasAuthToken }) {
 					<Home {...props} setHasAuthToken={setHasAuthToken} />
 				)}
 			</Stack.Screen>
-			<Stack.Screen name="Workout">
+			<Stack.Screen name="WorkoutLog">
 				{(props) => (
-					<Workout {...props} setHasAuthToken={setHasAuthToken} />
+					<WorkoutLog {...props} setHasAuthToken={setHasAuthToken} />
 				)}
 			</Stack.Screen>
 			<Stack.Screen name="GenerateWorkout">
