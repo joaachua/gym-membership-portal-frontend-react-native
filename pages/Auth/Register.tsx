@@ -71,7 +71,7 @@ const Register = ({ navigation }) => {
 			});
 
 			if (response && response.success) {
-				Toast.show({ type: "success", text1: "Registration successful!" });
+				Toast.show({ type: "success", text1: response?.message });
 
 				navigation.navigate("OtpScreen", {
 					email,

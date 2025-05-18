@@ -22,7 +22,7 @@ const OtpScreen = ({ navigation, setHasAuthToken, route }) => {
 				otp_code: otp
 			});
 			if (response && response.success) {
-				Toast.show({ type: "success", text1: "OTP verified successful!" });
+				Toast.show({ type: "success", text1: response?.message });
 
 				const { token } = response.data;
 

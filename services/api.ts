@@ -127,7 +127,7 @@ export const resetPassword = async (data) => {
 		return response.data;
 	} catch (error) {
 		console.error(
-			"Error verify otp:",
+			"Error reset password:",
 			error.response?.data || error.message
 		);
 		throw error;
@@ -152,6 +152,53 @@ export const getProfile = async (token) => {
 	} catch (error) {
 		console.error(
 			"Error getting user profile:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
+};
+
+export const updateProfile = async (token, data) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/profile/edit`,
+			data,
+			{
+				headers: {
+					"Content-Type": "application/json",
+					//"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFqb2FubmFjaHVhQGdtYWlsLmNvbSIsInNpZ25lZEF0IjoiMjAyNS0wNS0xMFQwNTo1NzozNC4yMzVaIiwiaWF0IjoxNzQ2ODU2NjU0LCJleHAiOjE3NDY5NDMwNTR9.wxKIKjEvugnZuspUr59sJWhDG09OY0M4-yGKJeSHsyU"
+					"Authorization": `Bearer ${token}`
+				},
+			}
+		);
+		
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error update user profile:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
+};
+
+export const changePassword = async (token, data) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/change-password`,
+			data,
+			{
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${token}`
+				},
+			}
+		);
+		console.log(response.data);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error change password:",
 			error.response?.data || error.message
 		);
 		throw error;

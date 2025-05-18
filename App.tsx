@@ -29,9 +29,9 @@ export default function App() {
 			const seen = await AsyncStorage.getItem("hasSeenOnboarding");
 			const token = await AsyncStorage.getItem("hasAuthToken");
 
-			await AsyncStorage.setItem("hasSeenOnboarding", "false");
-			await AsyncStorage.setItem("hasAuthToken", "false");
-			await SecureStore.deleteItemAsync("auth_token");
+			//await AsyncStorage.setItem("hasSeenOnboarding", "false");
+			//await AsyncStorage.setItem("hasAuthToken", "false");
+			//await SecureStore.deleteItemAsync("auth_token");
 			console.log(`${seen} ${token}`);
 
 		console.log("Current theme:", theme);

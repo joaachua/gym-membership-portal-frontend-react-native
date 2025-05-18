@@ -23,7 +23,7 @@ const ResetOtp = ({ navigation, setHasAuthToken, route }) => {
 			});
 
 			if (response && response.success) {
-				Toast.show({ type: "success", text1: "Reset OTP verified successful!" });
+				Toast.show({ type: "success", text1: response?.message });
 
 				navigation.navigate("ResetPassword", {
 					token: response.data.reset_token

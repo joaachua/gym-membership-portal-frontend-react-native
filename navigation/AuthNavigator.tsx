@@ -1,7 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Login from "../pages/Auth/Login"; // path to your Login screen
-import Register from "../pages/Auth/Register";
+import Login from "@/pages/Auth/Login"; // path to your Login screen
+import Register from "@/pages/Auth/Register";
 import OtpScreen from "@/pages/Auth/SendOtp";
 import ForgotPassword from "@/pages/Auth/ForgotPassword";
 import ResetOtp from "@/pages/Auth/ResetOtp";

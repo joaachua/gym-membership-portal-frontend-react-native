@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { ThemeContext, useTheme } from "../../styles/ThemeContext";
 import { getGlobalStyles } from "../../styles/global";
-import { getProfile } from "../../services/api";
+import { getProfile, updateProfile } from "../../services/api";
 import * as SecureStore from "expo-secure-store";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
@@ -45,13 +45,14 @@ const Profile = ({ navigation, setHasAuthToken }) => {
 	const [showDropdown, setShowDropdown] = useState(false);
 	const [showCountryCodeDropdown, setShowCountryCodeDropdown] = useState(false);
 
+    const [authToken, setAuthToken] = useState("");
+
 	const [salutation, setSalutation] = useState("MR.");
 	const [countryCode, setCountryCode] = useState("+60");
 	const [username, setUsername] = useState("");
 	const [full_name, setFullName] = useState("");
 	const [email, setEmail] = useState("");
 	const [phone_number, setPhoneNumber] = useState("");
-	const [password, setPassword] = useState("");
 
 	useEffect(() => {
 		const checkToken = async () => {
@@ -63,6 +64,7 @@ const Profile = ({ navigation, setHasAuthToken }) => {
 					throw new Error("Token missing");
 				}
 
+                setAuthToken(token);
 				const response = await getProfile(token); // e.g. GET /me
 				if (response && response.success) {
 					setProfile(response.data);
@@ -71,8 +73,22 @@ const Profile = ({ navigation, setHasAuthToken }) => {
 					setUsername(response.data?.username);
 					setFullName(response.data?.full_name);
 					setEmail(response.data?.email);
-					setCountryCode("+60");
-					setPhoneNumber(response.data?.phone_number);
+
+					if (response.data.phone_number) {
+						const matchedCode = countryCodeOption.find(code =>
+						  	response.data.phone_number.startsWith(code)
+						);
+					  
+						if (matchedCode) {
+						  	const nationalNumber = response.data.phone_number.slice(matchedCode.length);
+						  	setCountryCode("+" + matchedCode);
+						  	setPhoneNumber(nationalNumber);
+						} else {
+						 	// fallback if no country code matched
+						  	setCountryCode("");
+						  	setPhoneNumber(response.data.phone_number);
+						}
+					}	  
 				}
 			} catch (error) {
 				Toast.show({ type: "error", text1: "Session expired" });
@@ -91,6 +107,44 @@ const Profile = ({ navigation, setHasAuthToken }) => {
 
 	const handleCountryCodeDropdownPress = async () => {
 		setShowCountryCodeDropdown((prev) => !prev);
+	};
+
+	const handleUpdateProfile = async () => {
+		try {
+			console.log({
+				salutation, 
+				username, 
+				full_name, 
+				email, 
+				phone_number: `${countryCode.replace("+", "")}${phone_number}`
+			});
+			const response = await updateProfile(authToken, {
+				salutation, 
+				username, 
+				full_name, 
+				email, 
+				phone_number: `${countryCode.replace("+", "")}${phone_number}`
+			});
+
+			console.log(response);
+			if (response && response.success) {
+				Toast.show({ type: "success", text1: response?.message });
+			}
+		} catch (error) {
+			const errorMessages = error.response?.data?.data;
+
+			if (Array.isArray(errorMessages) && errorMessages.length > 0) {
+				// Join all messages separated by newline or comma
+				const messages = errorMessages.map((e: any) => e.message).join(", ");
+				Toast.show({ type: "error", text1: messages });
+			} else if (error.response?.data?.message) {
+				Toast.show({ type: "error", text1: error.response.data.message });
+			} else if (error?.response?.data?.message === "Failed to authenticate token") {
+				Toast.show({ type: "error", text1: error?.response?.data?.message });
+				await SecureStore.deleteItemAsync("auth_token");
+				setHasAuthToken(false);
+			}
+		}
 	};
 
 	const handleLogout = () => {
@@ -117,7 +171,13 @@ const Profile = ({ navigation, setHasAuthToken }) => {
 									paddingHorizontal: 10,
 								},
 							]}
-							onPress={() => setIsDisabled(!isDisabled)}
+							onPress={() => {
+								if (!isDisabled) {
+									handleUpdateProfile();
+								}
+
+								setIsDisabled(!isDisabled);
+							}}
 						>
 							<Text style={styles.hoveringRightButtonText}>
 								{isDisabled ? "Edit" : "Done"}

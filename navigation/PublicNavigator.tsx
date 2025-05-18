@@ -1,7 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import SplashScreen from "../pages/Onboarding/splashscreen";
-import Onboarding from "../pages/Onboarding/carousel_content";
+import SplashScreen from "@/pages/Onboarding/splashscreen";
+import Onboarding from "@/pages/Onboarding/carousel_content";
 
 const Stack = createNativeStackNavigator();
 

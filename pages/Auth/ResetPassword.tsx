@@ -25,7 +25,7 @@ const ResetPassword = ({ navigation, setHasAuthToken, route }) => {
 			});
 
             if (response && response.success) {
-                Toast.show({ type: "success", text1: "Password reset successfully!" });
+                Toast.show({ type: "success", text1: response?.message });
     
                 navigation.navigate("Login");
             }
@@ -49,7 +49,7 @@ const ResetPassword = ({ navigation, setHasAuthToken, route }) => {
 		<SafeAreaView style={styles.safeArea}>
 			<View style={styles.content}>
 				<Text style={styles.title}>Enter New Password</Text>
-                <Text style={[styles.description, { paddingHorizontal: 20, paddingBottom: 10 }]}>{"Please enter the email address that you registered with to get reset otp."}</Text>
+                <Text style={[styles.description, { paddingHorizontal: 20, paddingBottom: 10 }]}>{"Please enter your new password."}</Text>
 				<TextInput
 					placeholder="Password"
 					style={styles.input}

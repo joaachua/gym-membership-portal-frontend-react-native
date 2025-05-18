@@ -20,7 +20,7 @@ const ForgotPassword = ({ navigation, setHasAuthToken }) => {
 			});
 
             if (response && response.success) {
-                Toast.show({ type: "success", text1: "Sent reset password email!" });
+                Toast.show({ type: "success", text1: response?.message});
     
                 navigation.navigate("ResetOtp", {
                     email,
