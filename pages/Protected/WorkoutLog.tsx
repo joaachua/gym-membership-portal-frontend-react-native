@@ -61,14 +61,14 @@ const WorkoutLog = ({ navigation, setHasAuthToken }) => {
 					// Join all messages separated by newline or comma
 					const messages = errorMessages.map((e: any) => e.message).join(", ");
 					Toast.show({ type: "error", text1: messages });
-				} else if (error.response?.data?.message) {
-					Toast.show({ type: "error", text1: error.response.data.message });
 				} else if (
 					error?.response?.data?.message === "Failed to authenticate token"
 				) {
 					Toast.show({ type: "error", text1: error?.response?.data?.message });
 					await SecureStore.deleteItemAsync("auth_token");
 					setHasAuthToken(false);
+				} else if (error.response?.data?.message) {
+					Toast.show({ type: "error", text1: error.response.data.message });
 				}
 			}
 		};
@@ -99,14 +99,14 @@ const WorkoutLog = ({ navigation, setHasAuthToken }) => {
 				// Join all messages separated by newline or comma
 				const messages = errorMessages.map((e: any) => e.message).join(", ");
 				Toast.show({ type: "error", text1: messages });
-			} else if (error.response?.data?.message) {
-				Toast.show({ type: "error", text1: error.response.data.message });
 			} else if (
 				error?.response?.data?.message === "Failed to authenticate token"
 			) {
 				Toast.show({ type: "error", text1: error?.response?.data?.message });
 				await SecureStore.deleteItemAsync("auth_token");
 				setHasAuthToken(false);
+			} else if (error.response?.data?.message) {
+				Toast.show({ type: "error", text1: error.response.data.message });
 			}
 		}
 	};
@@ -131,17 +131,16 @@ const WorkoutLog = ({ navigation, setHasAuthToken }) => {
 				// Join all messages separated by newline or comma
 				const messages = errorMessages.map((e: any) => e.message).join(", ");
 				Toast.show({ type: "error", text1: messages });
-			} else if (error.response?.data?.message) {
-				Toast.show({ type: "error", text1: error.response.data.message });
 			} else if (
 				error?.response?.data?.message === "Failed to authenticate token"
 			) {
 				Toast.show({ type: "error", text1: error?.response?.data?.message });
 				await SecureStore.deleteItemAsync("auth_token");
 				setHasAuthToken(false);
+			} else if (error.response?.data?.message) {
+				Toast.show({ type: "error", text1: error.response.data.message });
 			}
 		}
-
 	};
 
 	return (
@@ -252,9 +251,11 @@ const WorkoutLog = ({ navigation, setHasAuthToken }) => {
 										maxWidth: "40%",
 									},
 								]}
-								onPress={() => setIsDisabled(prev => !prev)}
+								onPress={() => setIsDisabled((prev) => !prev)}
 							>
-								<Text style={[styles.secondaryButtonText]}>{isDisabled ? "Custom input" : "System Generated" }</Text>
+								<Text style={[styles.secondaryButtonText]}>
+									{isDisabled ? "Custom input" : "System Generated"}
+								</Text>
 							</TouchableOpacity>
 							<TextInput
 								editable={!isDisabled}
@@ -273,59 +274,24 @@ const WorkoutLog = ({ navigation, setHasAuthToken }) => {
 								keyboardType="numeric"
 							/>
 
-						<TouchableOpacity
-							style={[styles.outlinePrimaryButton, { marginBottom: 10 }]}
-							onPress={() => handleCalorieCalculation()}
-						>
-							<Text style={styles.outlinePrimaryButtonText}>Calculate Calories</Text>
-						</TouchableOpacity><TouchableOpacity
-							style={[styles.primaryButton, { marginBottom: 10 }]}
-							onPress={()=> handleLogWorkout()}
-						>
-							<Text style={styles.primaryButtonText}>Record Workout</Text>
-						</TouchableOpacity>
+							<TouchableOpacity
+								style={[styles.outlinePrimaryButton, { marginBottom: 10 }]}
+								onPress={() => handleCalorieCalculation()}
+							>
+								<Text style={styles.outlinePrimaryButtonText}>
+									Calculate Calories
+								</Text>
+							</TouchableOpacity>
+							<TouchableOpacity
+								style={[styles.primaryButton, { marginBottom: 10 }]}
+								onPress={() => handleLogWorkout()}
+							>
+								<Text style={styles.primaryButtonText}>Record Workout</Text>
+							</TouchableOpacity>
 						</View>
 					</View>
 				</ScrollView>
 			</SafeAreaView>
-			{/*<GestureHandlerRootView style={styles.container}>
-			<Text>Workout Tracker</Text>
-
-			<Text>Exercise:</Text>
-			<TextInput
-				style={styles.input}
-				value={exercise}
-				onChangeText={setExercise}
-				placeholder="e.g. Push-ups"
-			/>
-
-			<Text>Duration (minutes):</Text>
-			<TextInput
-				style={styles.input}
-				value={duration}
-				onChangeText={setDuration}
-				keyboardType="numeric"
-				placeholder="e.g. 30"
-			/>
-
-			<Text>Weight (kg):</Text>
-			<TextInput
-				style={styles.input}
-				value={weight}
-				onChangeText={setWeight}
-				keyboardType="numeric"
-				placeholder="e.g. 70"
-			/>
-
-			<Button title="Calculate Calories" onPress={handleCalorieCalculation} />
-			{calories && <Text>Calories Burned: {calories}</Text>}
-
-			<Button title="Log Workout" onPress={handleLogWorkout} />
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("GenerateWorkout")}>
-				<Text style={styles.buttonText}>Generate Workout</Text>
-			</TouchableOpacity>
-			<StatusBar style="auto" />
-		</GestureHandlerRootView>*/}
 		</>
 	);
 };

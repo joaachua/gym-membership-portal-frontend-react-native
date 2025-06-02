@@ -22,7 +22,7 @@ const Login = ({ navigation, setHasAuthToken }) => {
 				const { token } = response.data;
 
 				await SecureStore.setItemAsync('auth_token', token);
-				const authToken = await SecureStore.getItemAsync("auth_token");
+				console.log(token);
 
 				setHasAuthToken(true);
 

@@ -14,7 +14,7 @@ const CustomNavBar = ({ navigation }) => {
 			<TouchableOpacity onPress={() => navigation.navigate("Home")}>
                 <Icon name="home" size={28} color={"#fff"} />
 			</TouchableOpacity>
-			<TouchableOpacity onPress={() => navigation.navigate("Search")}>
+			<TouchableOpacity onPress={() => navigation.navigate("WorkoutLogList")}>
                 <Icon name="archive-search" size={28} color={"#fff"} />
 			</TouchableOpacity>
 			<TouchableOpacity onPress={() => navigation.navigate("Profile")}>

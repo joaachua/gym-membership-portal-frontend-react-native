@@ -228,7 +228,7 @@ export const calculateCalorie = async (token, data) => {
 export const logWorkout = async (token, data) => {
 	try {
 		const response = await axios.post(
-			`${API_URL}/user/workout-log`,
+			`${API_URL}/user/workout-log/create`,
 			data,
 			{
 				headers: {
@@ -241,6 +241,94 @@ export const logWorkout = async (token, data) => {
 	} catch (error) {
 		console.error(
 			"Error logging workout:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
+};
+
+export const editLogWorkout = async (token, data) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/workout-log/update`,
+			data,
+			{
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${token}`
+				},
+			}
+		);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error logging workout:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
+};
+
+export const viewLogWorkout = async (token, data) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/workout-log/view`,
+			data,
+			{
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${token}`
+				},
+			}
+		);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error logging workout:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
+};
+
+export const deleteLogWorkout = async (token, data) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/workout-log/delete`,
+			data,
+			{
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${token}`
+				},
+			}
+		);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error logging workout:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
+};
+
+export const logWorkoutList = async (token) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/workout-log/list`,
+			{},
+			{
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${token}`
+				},
+			}
+		);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error listing workout log:",
 			error.response?.data || error.message
 		);
 		throw error;

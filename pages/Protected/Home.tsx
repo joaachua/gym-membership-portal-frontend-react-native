@@ -36,13 +36,13 @@ const Home = ({ navigation, setHasAuthToken }) => {
 					// Join all messages separated by newline or comma
 					const messages = errorMessages.map((e: any) => e.message).join(", ");
 					Toast.show({ type: "error", text1: messages });
-				} else if (error.response?.data?.message) {
-					Toast.show({ type: "error", text1: error.response.data.message });
 				} else if (error?.response?.data?.message === "Failed to authenticate token") {
 					Toast.show({ type: "error", text1: error?.response?.data?.message });
 					await SecureStore.deleteItemAsync("auth_token");
 					setHasAuthToken(false);
-				}
+				} else if (error.response?.data?.message) {
+					Toast.show({ type: "error", text1: error.response.data.message });
+				} 
 			}
 		};
 

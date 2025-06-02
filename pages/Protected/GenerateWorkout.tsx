@@ -7,6 +7,7 @@ import {
 	StyleSheet,
 	TouchableOpacity,
 	ScrollView,
+	ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -22,24 +23,77 @@ import { StatusBar } from "expo-status-bar";
 import * as SecureStore from "expo-secure-store";
 import Toast from "react-native-toast-message";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { colors } from "@/styles/themes";
 
 const GenerateWorkout = ({ navigation, setHasAuthToken }) => {
 	const { theme } = useTheme();
 	const styles = getGlobalStyles(theme);
 	const [authToken, setAuthToken] = useState("");
+	const [loading, setLoading] = useState(false);
 
-	const [goal, setGoal] = useState("strength");
-	const [level, setLevel] = useState("beginner");
-	const [equipment, setEquipment] = useState("none");
-	const [showGoalDropdown, setShowGoalDropdown] = useState(false);
-	const [showLevelDropdown, setShowLevelDropdown] = useState(false);
+	const [muscleGroup, setMuscleGroup] = useState("Forearms");
+	const [equipment, setEquipment] = useState("");
+	const [rating, setRating] = useState("9.6");
+	const [showMuscleGroupDropDown, setShowMuscleGroupDropdown] = useState(false);
 	const [showEquipmentDropdown, setShowEquipmentDropdown] = useState(false);
+	const [showRatingDropdown, setShowRatingDropdown] = useState(false);
+	const [generatedWorkouts, setGeneratedWorkouts] = useState([]);
 
-	const goalOption = ["strength", "cardio", "flexibility", "general"];
+	const muscleGroupOption = [
+		"Forearms",
+		"Quadriceps",
+		"Abdominals",
+		"Lats",
+		"Middle Back",
+		"Lower Back",
+		"Shoulders",
+		"Biceps",
+		"Glutes",
+		"Triceps",
+		"Hamstrings",
+		"Neck",
+		"Chest",
+		"Traps",
+		"Calves",
+		"Abductors",
+		"Adductors"
+	];
 
-	const levelOption = ["beginner", "intermediate", "advanced"];
+	const equimentOption = [
+		"",
+		"Other",
+		"Machine",
+		"Barbell",
+		"Dumbbell",
+		"Body Only",
+		"Kettlebells",
+		"Cable",
+		"E-Z Curl Bar",
+		"None",
+		"Bands",
+		"Medicine Ball",
+		"Cables",
+		"Exercise Ball",
+		"Weight Bench",
+		"Dumbbells",
+	];
 
-	const equimentOption = ["none", "basic", "full"];
+	const ratingOption = [
+		"9.6",
+		"9.5",
+		"9.4",
+		"9.3",
+		"9.2",
+		"9.1",
+		"9",
+		"8.9",
+		"8.8",
+		"8.7",
+		"8.6",
+		"8.5",
+		"8.4",
+		"8.3"
+	];
 
 	useEffect(() => {
 		const checkToken = async () => {
@@ -58,15 +112,15 @@ const GenerateWorkout = ({ navigation, setHasAuthToken }) => {
 					// Join all messages separated by newline or comma
 					const messages = errorMessages.map((e: any) => e.message).join(", ");
 					Toast.show({ type: "error", text1: messages });
-				} else if (error.response?.data?.message) {
-					Toast.show({ type: "error", text1: error.response.data.message });
 				} else if (
 					error?.response?.data?.message === "Failed to authenticate token"
 				) {
 					Toast.show({ type: "error", text1: error?.response?.data?.message });
 					await SecureStore.deleteItemAsync("auth_token");
 					setHasAuthToken(false);
-				}
+				} else if (error.response?.data?.message) {
+					Toast.show({ type: "error", text1: error.response.data.message });
+				} 
 			}
 		};
 
@@ -75,28 +129,48 @@ const GenerateWorkout = ({ navigation, setHasAuthToken }) => {
 
 	const handleGenerateWorkoutPlan = async () => {
 		try {
+			setLoading(true);
 			const plan = await generateWorkout(authToken, {
-				goal,
-				level,
+				muscle_group: muscleGroup,
 				equipment,
+				rating,
 			});
-			console.log(plan);
+
+			if (plan.success) {
+				setLoading(false);
+				setGeneratedWorkouts(plan.data?.workouts || []);
+			}
 			//alert(plan.data.join("\n")); // simple way to show plan
 		} catch (error) {
-			console.error("Error generating workout plan:", error);
+			setLoading(false);
+			const errorMessages = error.response?.data?.data;
+
+			if (Array.isArray(errorMessages) && errorMessages.length > 0) {
+				// Join all messages separated by newline or comma
+				const messages = errorMessages.map((e: any) => e.message).join(", ");
+				Toast.show({ type: "error", text1: messages });
+			} else if (
+				error?.response?.data?.message === "Failed to authenticate token"
+			) {
+				Toast.show({ type: "error", text1: error?.response?.data?.message });
+				await SecureStore.deleteItemAsync("auth_token");
+				setHasAuthToken(false);
+			} else if (error.response?.data?.message) {
+				Toast.show({ type: "error", text1: error.response.data.message });
+			} 
 		}
 	};
 
-	const handleGoalDropdown = async () => {
-		setShowGoalDropdown((prev) => !prev);
-	};
-
-	const handleLevelDropdown = async () => {
-		setShowLevelDropdown((prev) => !prev);
+	const handleMuscleGroupDropdown = async () => {
+		setShowMuscleGroupDropdown((prev) => !prev);
 	};
 
 	const handleEquipmentDropdown = async () => {
 		setShowEquipmentDropdown((prev) => !prev);
+	};
+
+	const handleRatingDropdown = async () => {
+		setShowRatingDropdown((prev) => !prev);
 	};
 
 	return (
@@ -109,7 +183,7 @@ const GenerateWorkout = ({ navigation, setHasAuthToken }) => {
 								Want to get started from our recommended workouts?
 							</Text>
 
-							<Text style={styles.bodyText}>What's your goal?</Text>
+							<Text style={styles.bodyText}>Which muscle group do you want to target?</Text>
 							<View style={styles.dropDown}>
 								<View style={{ flex: 1 }}>
 									<TouchableOpacity
@@ -123,7 +197,7 @@ const GenerateWorkout = ({ navigation, setHasAuthToken }) => {
 												paddingHorizontal: 10,
 											},
 										]}
-										onPress={handleGoalDropdown}
+										onPress={handleMuscleGroupDropdown}
 									>
 										<Text
 											style={[
@@ -134,11 +208,11 @@ const GenerateWorkout = ({ navigation, setHasAuthToken }) => {
 												},
 											]}
 										>
-											{goal ? goal : "strength"}
+											{muscleGroup ? muscleGroup : "Forearms"}
 										</Text>
 										<Icon
 											name={
-												showGoalDropdown
+												showMuscleGroupDropDown
 													? "keyboard-arrow-up"
 													: "keyboard-arrow-down"
 											}
@@ -147,16 +221,16 @@ const GenerateWorkout = ({ navigation, setHasAuthToken }) => {
 										/>
 									</TouchableOpacity>
 
-									{showGoalDropdown && (
+									{showMuscleGroupDropDown && (
 										<View style={styles.dropDownItem}>
 											<ScrollView style={{ maxHeight: 150 }}>
-												{goalOption.map((option) => (
+												{muscleGroupOption.map((option) => (
 													<TouchableOpacity
 														key={option}
 														style={{ padding: 10 }}
 														onPress={() => {
-															setGoal(option);
-															setShowGoalDropdown(false);
+															setMuscleGroup(option);
+															setShowMuscleGroupDropdown(false);
 														}}
 													>
 														<Text
@@ -178,7 +252,7 @@ const GenerateWorkout = ({ navigation, setHasAuthToken }) => {
 								</View>
 							</View>
 
-							<Text style={styles.bodyText}>What intensity do you prefer?</Text>
+							<Text style={styles.bodyText}>Rating of the exercise, may be interpreted as a measure of optimality</Text>
 							<View style={styles.dropDown}>
 								{/* Dropdown - 25% */}
 								<View style={{ flex: 1 }}>
@@ -193,7 +267,7 @@ const GenerateWorkout = ({ navigation, setHasAuthToken }) => {
 												paddingHorizontal: 10,
 											},
 										]}
-										onPress={handleLevelDropdown}
+										onPress={handleRatingDropdown}
 									>
 										<Text
 											style={[
@@ -204,11 +278,11 @@ const GenerateWorkout = ({ navigation, setHasAuthToken }) => {
 												},
 											]}
 										>
-											{level ? level : "beginner"}
+											{rating ? rating : "9.6"}
 										</Text>
 										<Icon
 											name={
-												showLevelDropdown
+												showRatingDropdown
 													? "keyboard-arrow-up"
 													: "keyboard-arrow-down"
 											}
@@ -217,16 +291,16 @@ const GenerateWorkout = ({ navigation, setHasAuthToken }) => {
 										/>
 									</TouchableOpacity>
 
-									{showLevelDropdown && (
+									{showRatingDropdown && (
 										<View style={styles.dropDownItem}>
 											<ScrollView style={{ maxHeight: 150 }}>
-												{levelOption.map((option) => (
+												{ratingOption.map((option) => (
 													<TouchableOpacity
 														key={option}
 														style={{ padding: 10 }}
 														onPress={() => {
-															setLevel(option);
-															setShowLevelDropdown(false);
+															setRating(option);
+															setShowRatingDropdown(false);
 														}}
 													>
 														<Text
@@ -249,7 +323,7 @@ const GenerateWorkout = ({ navigation, setHasAuthToken }) => {
 							</View>
 
 							<Text style={styles.bodyText}>
-								What's your stamina/strength level?
+								Do you have equipments?
 							</Text>
 							<View style={styles.dropDown}>
 								{/* Dropdown - 25% */}
@@ -320,12 +394,41 @@ const GenerateWorkout = ({ navigation, setHasAuthToken }) => {
 								</View>
 							</View>
 							<TouchableOpacity
-								style={[styles.primaryButton, { marginBottom: 10 }]}
+								disabled={loading}
+								style={[styles.primaryButton, { 
+									opacity: loading ? 0.5 : 1,
+									marginBottom: 10 
+								}]}
 								onPress={handleGenerateWorkoutPlan}
 							>
-								<Text style={styles.primaryButtonText}>Generate Workout</Text>
+								<Text style={styles.primaryButtonText}>{loading ? "Loading" : "Generate Workout"}</Text>
 							</TouchableOpacity>
 						</View>
+						
+						{loading &&
+							<ActivityIndicator size="large" color={colors[theme].accent} />
+						}
+
+						{!loading && generatedWorkouts.length > 0 && (
+							<View style={[styles.section, { marginTop: 20 }]}>
+								<Text style={[styles.bodyText, { marginBottom: 10 }]}>
+									Your Recommended Workouts:
+								</Text>
+								{generatedWorkouts.map((workout, index) => (
+									<View
+										key={index}
+										style={{
+											backgroundColor: "#f0f0f0",
+											padding: 12,
+											borderRadius: 8,
+											marginBottom: 8,
+										}}
+									>
+										<Text style={styles.bodyText}>{workout}</Text>
+									</View>
+								))}
+							</View>
+						)}
 					</View>
 				</ScrollView>
 			</SafeAreaView>
