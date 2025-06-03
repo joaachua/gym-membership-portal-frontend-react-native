@@ -357,6 +357,138 @@ export const generateWorkout = async (token, data) => {
 	}
 };
 
+export const getClassDetails = async (token, data) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/class/view`,
+			data,
+			{
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${token}`
+				},
+			}
+		);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error calculating calories:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
+};
+
+export const registerClass = async (token, data) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/class/register`,
+			data,
+			{
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${token}`
+				},
+			}
+		);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error calculating calories:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
+};
+
+export const getClassList = async (token) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/class/list`,
+			{},
+			{
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${token}`
+				},
+			}
+		);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error calculating calories:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
+};
+
+export const getCentreDetails = async (token, data) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/centre/view`,
+			data,
+			{
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${token}`
+				},
+			}
+		);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error calculating calories:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
+};
+
+export const getCentreList = async (token) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/centre/list`,
+			{},
+			{
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${token}`
+				},
+			}
+		);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error calculating calories:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
+};
+
+export const getUserAchievements = async (token) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/achievement/list`,
+			{},
+			{
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${token}`
+				},
+			}
+		);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error calculating calories:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
+};
+
 export const logout = async (token) => {
 	try {
 		const response = await axios.post(

@@ -455,6 +455,7 @@ export const getGlobalStyles = (theme: "light" | "dark") =>
 			alignItems: "center",
 			marginVertical: 8,
 		},
+
 		buttonText: {
 			color: colors[theme].buttonText,
 			fontFamily: "Roboto-Bold",
@@ -465,5 +466,131 @@ export const getGlobalStyles = (theme: "light" | "dark") =>
 		},
 		label: {
 			color: colors[theme].bodyText,
+		},
+
+		centreCard: {
+			backgroundColor: "#fff",
+			borderRadius: 16,
+			marginRight: 16,
+			marginBottom: 20,
+			overflow: "hidden",
+			width: 280,
+			shadowColor: "#000",
+			shadowOpacity: 0.1,
+			shadowRadius: 4,
+			elevation: 4,
+		},
+
+		centreImage: {
+			width: "100%",
+			height: 140,
+		},
+
+		centreContent: {
+			padding: 12,
+		},
+
+		centreName: {
+			fontSize: 18,
+			fontWeight: "bold",
+			marginBottom: 4,
+		},
+
+		centreLocation: {
+			fontSize: 14,
+			color: "#666",
+			marginBottom: 8,
+		},
+
+		subheading: {
+			fontWeight: "600",
+			marginTop: 8,
+			marginBottom: 4,
+		},
+
+		schedule: {
+			fontSize: 12,
+			color: "#444",
+		},
+
+		tagContainer: {
+			flexDirection: "row",
+			flexWrap: "wrap",
+			gap: 6,
+			marginTop: 4,
+		},
+
+		tag: {
+			backgroundColor: colors[theme].accent,
+			color: "#fff",
+			paddingHorizontal: 8,
+			paddingVertical: 4,
+			borderRadius: 12,
+			fontSize: 12,
+			marginRight: 6,
+			marginBottom: 6,
+		},
+
+		name: {
+			fontSize: 20,
+			fontWeight: "bold",
+		},
+
+		location: {
+			fontSize: 14,
+			color: "#555",
+			marginBottom: 8,
+		},
+
+		horizontalCard: {
+			backgroundColor: "#fff",
+			padding: 16,
+			borderRadius: 12,
+			marginRight: 12,
+			width: 200,
+			elevation: 3,
+			shadowColor: "#000",
+			shadowOpacity: 0.1,
+			shadowOffset: { width: 0, height: 2 },
+			shadowRadius: 4,
+		},
+
+		cardTitle: {
+			fontSize: 16,
+			fontWeight: "600",
+			marginBottom: 4,
+		},
+
+		cardSubtitle: {
+			fontSize: 13,
+			color: "#666",
+		},
+
+		achievementCard: {
+			backgroundColor: "#f8f8f8",
+			padding: 15,
+			borderRadius: 12,
+			marginRight: 10,
+			width: 150,
+			alignItems: "center",
+			shadowColor: "#000",
+			shadowOpacity: 0.1,
+			shadowOffset: { width: 0, height: 1 },
+			shadowRadius: 3,
+			elevation: 2,
+		},
+		achievementIcon: {
+			fontSize: 32,
+			marginBottom: 10,
+		},
+		achievementTitle: {
+			fontWeight: "bold",
+			fontSize: 14,
+			textAlign: "center",
+		},
+		achievementProgress: {
+			fontSize: 12,
+			marginTop: 5,
+			color: "#555",
 		},
 	});

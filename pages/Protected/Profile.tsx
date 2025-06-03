@@ -13,18 +13,20 @@ import {
 } from "react-native";
 import { ThemeContext, useTheme } from "../../styles/ThemeContext";
 import { getGlobalStyles } from "../../styles/global";
-import { getProfile, logout, updateProfile } from "../../services/api";
+import { getProfile, logout, updateProfile, getUserAchievements } from "../../services/api";
 import * as SecureStore from "expo-secure-store";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import CustomNavBar from "../Components/Custom/CustomNavBar";
 import { colors } from "@/styles/themes";
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Profile = ({ navigation, setHasAuthToken }) => {
 	const { theme } = useTheme();
 	const styles = getGlobalStyles(theme);
 	const [profile, setProfile] = useState(null);
+	const [achievements, setAchievements] = useState(null);
 	const [isVisible, setIsVisible] = useState(false);
 	const [isDisabled, setIsDisabled] = useState(true);
 
@@ -90,7 +92,11 @@ const Profile = ({ navigation, setHasAuthToken }) => {
 						  	setCountryCode("");
 						  	setPhoneNumber(response.data.phone_number);
 						}
-					}	  
+					}
+					
+					const achievements = await getUserAchievements(token);
+					setAchievements(achievements.data);
+					console.log(achievements.data);
 				}
 			} catch (error) {
 				Toast.show({ type: "error", text1: "Session expired" });
@@ -177,7 +183,6 @@ const Profile = ({ navigation, setHasAuthToken }) => {
 		<SafeAreaView style={styles.safeArea}>
 			<ScrollView contentContainerStyle={styles.scrollContent}>
 				<View style={styles.mainContent}>
-					{/* Section 1: Search + Greeting */}
 					<View style={styles.section}>
 						<Text style={[styles.greeting, { marginBottom: 15 }]}>Profile</Text>
 
@@ -373,6 +378,26 @@ const Profile = ({ navigation, setHasAuthToken }) => {
 							</View>
 						</View>
 					</View>
+
+					{achievements &&
+						<View style={styles.section}>
+							<Text style={styles.sectionTitle}>Achievements</Text>
+							<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+								{achievements.map((item) => (
+								<View key={item.id} style={[styles.achievementCard, { marginBottom: 10, marginTop: 5 }]}>
+									<MCIcon name="medal" size={32} color={colors[theme].accent} style={styles.achievementIcon} />
+									<Text style={styles.achievementTitle}>{item.title}</Text>
+									<Text style={styles.achievementProgress}>
+									{item.progress}/{item.target_value}
+									</Text>
+									{item.is_unlocked && (
+									<Text style={{ color: "green", fontWeight: "bold" }}>Unlocked!</Text>
+									)}
+								</View>
+								))}
+							</ScrollView>
+						</View>
+					}
 
 					<View style={styles.section}>
 						<Text style={styles.sectionTitle}>Other Settings</Text>
