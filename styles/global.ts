@@ -460,6 +460,7 @@ export const getGlobalStyles = (theme: "light" | "dark") =>
 			color: colors[theme].buttonText,
 			fontFamily: "Roboto-Bold",
 		},
+
 		link: {
 			color: colors[theme].accent,
 			fontFamily: "Roboto-Bold",
@@ -592,5 +593,12 @@ export const getGlobalStyles = (theme: "light" | "dark") =>
 			fontSize: 12,
 			marginTop: 5,
 			color: "#555",
+		},
+
+		emptyText: {
+			textAlign: "center",
+			marginTop: 20,
+			fontSize: 16,
+			color: "#999",
 		},
 	});

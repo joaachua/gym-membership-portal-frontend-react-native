@@ -141,7 +141,7 @@ const Home = ({ navigation, setHasAuthToken }) => {
 							</TouchableOpacity>
 							<TouchableOpacity
 								style={styles.card}
-								onPress={() => navigation.navigate("")}
+								onPress={() => navigation.navigate("RegisterClassList")}
 							>
 								<Icon name={"account-group"} size={36} color="#E38035" />
 								<Text style={styles.cardLabel}>Classes</Text>

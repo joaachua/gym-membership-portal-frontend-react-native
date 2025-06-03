@@ -8,6 +8,7 @@ import ChangePassword from "@/pages/Protected/ChangePassword";
 import WorkoutLogList from "@/pages/Protected/WorkoutLogList";
 import ViewCentre from "@/pages/Protected/ViewCentre";
 import ViewClass from "@/pages/Protected/ViewClass";
+import RegisterClassList from "@/pages/Protected/Classes";
 
 const Stack = createNativeStackNavigator();
 
@@ -50,6 +51,9 @@ export default function ProtectedNavigator({ setHasAuthToken }) {
 			</Stack.Screen>
 			<Stack.Screen name="ViewClass">
 				{(props) => <ViewClass {...props} setHasAuthToken={setHasAuthToken} />}
+			</Stack.Screen>
+			<Stack.Screen name="RegisterClassList">
+				{(props) => <RegisterClassList {...props} setHasAuthToken={setHasAuthToken} />}
 			</Stack.Screen>
 		</Stack.Navigator>
 	);

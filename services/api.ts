@@ -401,6 +401,28 @@ export const registerClass = async (token, data) => {
 	}
 };
 
+export const getRegisterClass = async (token) => {
+	try {
+		const response = await axios.post(
+			`${API_URL}/user/class/register-list`,
+			{},
+			{
+				headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${token}`
+				},
+			}
+		);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Error calculating calories:",
+			error.response?.data || error.message
+		);
+		throw error;
+	}
+};
+
 export const getClassList = async (token) => {
 	try {
 		const response = await axios.post(
